@@ -53,6 +53,7 @@ void loop() {
   if (digitalRead(buttonSet) == 0) {
     delay(200);
     beep(100, 100);
+    count = 0;
     mode = 1;
   }
   if (digitalRead(buttonStart) == 0) {
@@ -63,7 +64,7 @@ void loop() {
   }
 
   while (mode == 1)  {
-    Serial.println("Mode 1");
+    //    Serial.println("Mode 1");
     if (digitalRead(buttonSet) == 0)   {
       delay(200);
       angle_base = map(analogRead(s_base), 222, 465, 0, 180);
@@ -71,22 +72,24 @@ void loop() {
       arrayBase[count] = angle_base;
       arrayShoulder[count] = angle_shoulder;
       count += 1;
-      Serial.println("Next");
+      Serial.print(angle_base);
+      Serial.print(" ");
+      Serial.println(angle_shoulder);
       beep(100, 100);
       beep(100, 100);
       delay(1000);
     }
     if (digitalRead(buttonStart) == 0) {
       delay(200);
-//      Serial.println("Exit");
+      //      Serial.println("Exit");
       BASE.attach(base);
       SHOULDER.attach(shoulder);
-      beep(1000, 0);
       BASE.write(90);
       SHOULDER.write(90);
-      delay(2000);
+      beep(1000, 0);
       BASE.detach();
       SHOULDER.detach();
+      count = 0;
       mode = 0;
     }
   }
@@ -96,18 +99,20 @@ void loop() {
     BASE.attach(base);
     SHOULDER.attach(shoulder);
 
-//    Serial.print("Array = ");
+    //    Serial.print("Array = ");
 
     for (int i = 0; i < 5; i++) {
-//      Serial.print(arrayBase[i]);
-//      Serial.print(" ");
-//      Serial.println(arrayShoulder[i]);
+      Serial.print(arrayBase[i]);
+      Serial.print(" ");
+      Serial.println(arrayShoulder[i]);
 
       BASE.write(arrayBase[i]);
       SHOULDER.write(arrayShoulder[i]);
       delay(1000);
+      //      arrayBase[i] = 90;
+      //      arrayBase[i] = 90;
     }
-
+    delay(1000);
     BASE.write(90);
     SHOULDER.write(90);
     delay(1000);
@@ -119,12 +124,12 @@ void loop() {
     beep(100, 100);
   }
 
-//  angle_base = map(analogRead(s_base), 222, 465, 0, 180);
-//  angle_shoulder = map(analogRead(s_shoulder), 138, 373, 0, 180);
-//
-//  Serial.print("Main = ");
-//  Serial.print(angle_base);
-//  Serial.print(" ");
-//  Serial.println(digitalRead(angle_shoulder));
-//  delay(200);
+  //  angle_base = map(analogRead(s_base), 222, 465, 0, 180);
+  //  angle_shoulder = map(analogRead(s_shoulder), 138, 373, 0, 180);
+  //
+  //  Serial.print("Main = ");
+  //  Serial.print(angle_base);
+  //  Serial.print(" ");
+//  Serial.println(analogRead(s_shoulder));
+  //  delay(200);
 }
